@@ -6,30 +6,96 @@
         xmlns:local="clr-namespace:P30_Querst_project"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Анкета" Height="400" Width="482"
-        materialDesign:ColorZoneAssist.Mode="Light">
+        Title="Анкета" Height="500" Width="550"
+        WindowStartupLocation="CenterScreen"
+        materialDesign:ColorZoneAssist.Mode="Light"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#FFBBDEFB"/>
+        <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF2196F3"/>
+        <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#FF1976D2"/>
+        <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#FF607D8B"/>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="QuestionHeaderText" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignRadioButton}">
+            <Setter Property="Margin" Value="8,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,8,0,0"/>
+            <Setter Property="materialDesign:HintAssist.Hint" Value="Ваш ответ"/>
+            <Setter Property="materialDesign:HintAssist.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="0,12"/>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Margin" Value="0,16,0,0"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource PrimaryHueDarkBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ItemsControl">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style TargetType="StackPanel" x:Key="QuestionPanelStyle">
+            <Setter Property="Margin" Value="0,0,0,24"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-	<StackPanel Margin="20">
-            <TextBlock Text="Оцените качество работы программы" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
-            <ItemsControl x:Name="QuestionsItemsControl">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="0,0,0,10">
-                            <TextBlock Text="{Binding QuestionType}" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <ItemsControl ItemsSource="{Binding Votes}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <RadioButton Content="{Binding}" GroupName="{Binding QuestionType}"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <TextBox Visibility="{Binding QuestionType, Converter={StaticResource QuestionTypeToVisibilityConverter}, ConverterParameter='text'}"
-                                     materialDesign:HintAssist.Hint="Ваш ответ" Margin="0,5,0,0" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Content="Отправить" Click="SubmitButton_Click" Margin="0,20,0,0" />
-        </StackPanel>
+        <Border CornerRadius="4" Margin="20" Background="{DynamicResource MaterialDesignPaper}" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1" Padding="20">
+
+            <StackPanel>
+                <TextBlock Text="Оцените качество работы программы" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+
+                <ItemsControl x:Name="QuestionsItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,15">
+                                <TextBlock Text="{Binding QuestionType}" Style="{StaticResource QuestionHeaderStyle}"/>
+                                <ItemsControl ItemsSource="{Binding Votes}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Content="{Binding}" GroupName="{Binding QuestionType}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <TextBox Visibility="{Binding QuestionType, Converter={StaticResource QuestionTypeToVisibilityConverter}, ConverterParameter='text'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Content="Отправить" Click="SubmitButton_Click"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
