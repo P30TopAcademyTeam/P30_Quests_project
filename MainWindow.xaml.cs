@@ -22,7 +22,7 @@ namespace P30_Querst_project
     {
         public MainWindow()
         {
-            InitializeComponent();
+            
         }
     }
 }
